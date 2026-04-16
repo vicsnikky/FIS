@@ -39,12 +39,20 @@ export default function Home() {
              transition={{ delay: 0.4, duration: 0.5 }}
              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
-            <button className="w-full sm:w-auto bg-accent text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-red-700 transition-all hover:scale-105 shadow-xl shadow-accent/20 active:scale-95">
+            <a 
+              href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto bg-accent text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-red-700 transition-all hover:scale-105 shadow-xl shadow-accent/20 active:scale-95 inline-flex justify-center"
+            >
               Enroll Today
-            </button>
-            <button className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-white/20 transition-all">
+            </a>
+            <Link 
+              to="/programs"
+              className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-white/20 transition-all inline-flex justify-center"
+            >
               Explore Programs
-            </button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -101,8 +109,9 @@ export default function Home() {
             <p className="text-slate-500 max-w-2xl mx-auto">Discover a world of possibilities through our specialized academic tracks designed for every stage of your journey.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
+              { title: "Early Years & Primary", desc: "Nurturing curiosity in Creche, Kindergarten, and Primary education.", icon: "🧸" },
               { title: "Secondary School", desc: "Foundational excellence with a focus on both WAEC and international integration.", icon: "🎓" },
               { title: "Diploma Programs", desc: "Short-term specialized courses focusing on technical and vocational skills.", icon: "📜" },
               { title: "Study in Canada", desc: "Complete support for University admissions, work permits, and permanent residency.", icon: "🇨🇦" },
@@ -110,11 +119,11 @@ export default function Home() {
               <div key={i} className="bg-slate-50 p-10 rounded-3xl border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all group">
                 <div className="text-5xl mb-6">{program.icon}</div>
                 <h3 className="text-2xl font-bold text-primary mb-4 group-hover:text-accent transition-colors">{program.title}</h3>
-                <p className="text-slate-600 mb-8">{program.desc}</p>
-                <button className="flex items-center gap-2 text-primary font-bold hover:text-accent transition-colors group/btn">
+                <p className="text-slate-600 mb-8 text-sm">{program.desc}</p>
+                <Link to="/programs" className="flex items-center gap-2 text-primary font-bold hover:text-accent transition-colors group/btn">
                   Learn More
                   <svg className="transform group-hover/btn:translate-x-1 transition-transform" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
+                </Link>
               </div>
             ))}
           </div>

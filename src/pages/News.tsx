@@ -38,24 +38,25 @@ export default function News() {
   const [newsletterStatus, setNewsletterStatus] = useState({ submitting: false, success: false, error: '' });
 
   useEffect(() => {
-    const saved = localStorage.getItem('fis_posts');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      const newsItems = parsed
-        .filter((p: any) => p.category === 'news' || p.category === 'event')
-        .map((p: any) => ({
+    async function fetchNews() {
+      if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') return;
+      
+      const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+      
+      if (!error && data && data.length > 0) {
+        const newsItems = data.map((p: any) => ({
           id: p.id,
-          category: p.category === 'news' ? 'News' : 'Events',
+          category: p.category,
           title: p.title,
-          excerpt: p.description,
-          date: new Date(p.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-          author: 'Admin',
-          image: p.imageUrl || 'https://images.unsplash.com/photo-1544717297-fa95b3697628?q=80&w=2070&auto=format&fit=crop'
+          excerpt: p.excerpt,
+          date: new Date(p.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          author: p.author || 'Admin',
+          image: p.image_url || 'https://images.unsplash.com/photo-1544717297-fa95b3697628?q=80&w=2070&auto=format&fit=crop'
         }));
-      if (newsItems.length > 0) {
-        setPosts(newsItems);
+        setPosts((current) => [...newsItems, ...newsPosts]);
       }
     }
+    fetchNews();
   }, []);
 
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

@@ -3,20 +3,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plus, Trash2, LogOut, LayoutDashboard, 
   Image as ImageIcon, Newspaper, Calendar as CalendarIcon, 
-  Lock, Settings, Eye, EyeOff, Save, CheckCircle, X
+  Lock, Settings, Eye, EyeOff, Save, CheckCircle, X, ImagePlus, Upload
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-
-// Types
-interface Post {
-  id: string;
-  title: string;
-  description: string;
-  category: 'gallery' | 'news' | 'event';
-  imageUrl?: string;
-  videoUrl?: string;
-  createdAt: number;
-}
+import { supabase } from '../lib/supabase';
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,36 +15,44 @@ export default function Admin() {
   const [error, setError] = useState('');
   
   // Dashboard state
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [activeTab, setActiveTab] = useState<'posts' | 'settings'>('posts');
+  const [posts, setPosts] = useState<any[]>([]);
+  const [gallery, setGallery] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<'posts' | 'gallery' | 'settings'>('posts');
   const [isAdding, setIsAdding] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // New Post Form
-  const [newPost, setNewPost] = useState<Omit<Post, 'id' | 'createdAt'>>({
+  // New Item Form
+  type ContentType = 'news' | 'event' | 'gallery';
+  const [formType, setFormType] = useState<ContentType>('news');
+  const [formData, setFormData] = useState({
     title: '',
-    description: '',
-    category: 'gallery',
-    imageUrl: '',
-    videoUrl: ''
+    excerpt: '',
+    mediaType: 'image', // for gallery: 'image' or 'video'
+    mediaUrl: '', // for video link
   });
+  const [fileBase64, setFileBase64] = useState<string>('');
 
-  // Load state from localStorage
+  // Load state
   useEffect(() => {
     const savedAuth = localStorage.getItem('fis_admin_auth');
-    if (savedAuth === 'true') setIsAuthenticated(true);
-
-    const savedPosts = localStorage.getItem('fis_posts');
-    if (savedPosts) {
-      setPosts(JSON.parse(savedPosts));
-    } else {
-      // Seed with some mock data if empty
-      const initial = [
-        { id: '1', title: 'Welcome to FIS', description: 'Sample news post', category: 'news', imageUrl: 'https://picsum.photos/seed/news/800/600', createdAt: Date.now() }
-      ];
-      setPosts(initial as any);
-      localStorage.setItem('fis_posts', JSON.stringify(initial));
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+      fetchData();
     }
-  }, []);
+  }, [isAuthenticated]);
+
+  const fetchData = async () => {
+    if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') return;
+    try {
+      const { data: postsData } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+      if (postsData) setPosts(postsData);
+
+      const { data: galleryData } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
+      if (galleryData) setGallery(galleryData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,25 +72,58 @@ export default function Admin() {
     localStorage.removeItem('fis_admin_auth');
   };
 
-  const handleAddPost = (e: React.FormEvent) => {
-    e.preventDefault();
-    const post: Post = {
-      ...newPost,
-      id: Math.random().toString(36).substr(2, 9),
-      createdAt: Date.now()
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFileBase64(reader.result as string);
     };
-    const updatedPosts = [post, ...posts];
-    setPosts(updatedPosts);
-    localStorage.setItem('fis_posts', JSON.stringify(updatedPosts));
-    setIsAdding(false);
-    setNewPost({ title: '', description: '', category: 'gallery', imageUrl: '', videoUrl: '' });
+    reader.readAsDataURL(file);
   };
 
-  const handleDeletePost = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      const updatedPosts = posts.filter(p => p.id !== id);
-      setPosts(updatedPosts);
-      localStorage.setItem('fis_posts', JSON.stringify(updatedPosts));
+  const handleAddPost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      if (formType === 'gallery') {
+        const payload = {
+          title: formData.title,
+          media_type: formData.mediaType,
+          media_url: formData.mediaType === 'image' ? fileBase64 : formData.mediaUrl
+        };
+        await supabase.from('gallery').insert([payload]);
+      } else {
+        const payload = {
+          category: formType === 'news' ? 'News' : 'Events',
+          title: formData.title,
+          excerpt: formData.excerpt,
+          image_url: fileBase64
+        };
+        await supabase.from('posts').insert([payload]);
+      }
+      
+      await fetchData();
+      setIsAdding(false);
+      setFormData({ title: '', excerpt: '', mediaType: 'image', mediaUrl: '' });
+      setFileBase64('');
+    } catch (error) {
+      console.error('Error adding content:', error);
+      alert('Failed to add content. Make sure Supabase is connected.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeletePost = async (id: string, type: 'post' | 'gallery') => {
+    if (window.confirm('Are you sure you want to delete this content?')) {
+      if (type === 'post') {
+        await supabase.from('posts').delete().eq('id', id);
+      } else {
+        await supabase.from('gallery').delete().eq('id', id);
+      }
+      fetchData();
     }
   };
 
@@ -140,13 +171,27 @@ export default function Admin() {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-            {error && <p className="text-accent text-sm font-medium text-center">{error}</p>}
-            <button className="w-full bg-primary text-white py-5 rounded-2xl font-bold hover:bg-slate-900 transition-all shadow-lg text-lg">
-              Unlock Dashboard
+            
+            <AnimatePresence>
+              {error && (
+                <motion.p 
+                  initial={{ opacity: 0, y: -10 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  exit={{ opacity: 0 }} 
+                  className="text-red-500 text-sm font-semibold text-center"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            <button type="submit" className="w-full bg-accent text-white py-5 rounded-2xl font-bold hover:bg-red-700 transition-all shadow-xl shadow-accent/20 active:scale-95">
+              Access Dashboard
             </button>
           </form>
-          <p className="mt-8 text-center text-[10px] text-slate-300 uppercase tracking-widest font-bold">
-            FENSTER INTERNATIONAL SCHOOL
+          
+          <p className="text-center text-slate-400 text-sm mt-8">
+            Default password on first run: <strong className="text-slate-600">FIS123</strong>
           </p>
         </motion.div>
       </div>
@@ -186,7 +231,17 @@ export default function Admin() {
                )}
              >
                <Newspaper size={20} />
-               Manage Posts
+               News & Events
+             </button>
+             <button 
+               onClick={() => setActiveTab('gallery')}
+               className={cn(
+                 "w-full flex items-center gap-4 px-8 py-5 rounded-3xl font-bold transition-all",
+                 activeTab === 'gallery' ? "bg-white text-primary shadow-xl" : "text-slate-500 hover:bg-white/50"
+               )}
+             >
+               <ImagePlus size={20} />
+               Gallery
              </button>
              <button 
                onClick={() => setActiveTab('settings')}
@@ -203,7 +258,7 @@ export default function Admin() {
           {/* Main Content */}
           <div className="lg:col-span-3">
              <AnimatePresence mode="wait">
-                {activeTab === 'posts' ? (
+                {activeTab === 'posts' && (
                   <motion.div 
                     key="posts"
                     initial={{ opacity: 0, y: 10 }}
@@ -212,34 +267,30 @@ export default function Admin() {
                     className="space-y-8"
                   >
                     <div className="flex items-center justify-between">
-                       <h2 className="text-2xl font-bold text-primary">Content Repository</h2>
+                       <h2 className="text-2xl font-bold text-primary">News & Events</h2>
                        <button 
-                        onClick={() => setIsAdding(true)}
+                        onClick={() => { setFormType('news'); setIsAdding(true); }}
                         className="bg-accent text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-red-700 shadow-lg shadow-accent/20 transition-all"
                        >
                          <Plus size={20} />
-                         Add New
+                         Add News
                        </button>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
                        {posts.length === 0 ? (
                          <div className="bg-white p-20 rounded-[40px] text-center space-y-4 border border-dashed border-slate-200">
-                            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">
-                               <Newspaper size={40} />
-                            </div>
                             <h3 className="text-xl font-bold text-slate-400">No content found.</h3>
-                            <p className="text-slate-300">Start by adding your first gallery item, news or event.</p>
                          </div>
                        ) : (
                          posts.map((post) => (
                            <div key={post.id} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-center gap-6 hover:shadow-xl transition-all">
                               <div className="w-24 h-24 bg-slate-50 rounded-2xl overflow-hidden shrink-0 border border-slate-100">
-                                 {post.imageUrl ? (
-                                   <img src={post.imageUrl} className="w-full h-full object-cover" />
+                                 {post.image_url ? (
+                                   <img src={post.image_url} className="w-full h-full object-cover" />
                                  ) : (
                                    <div className="w-full h-full flex items-center justify-center text-slate-300">
-                                      {post.category === 'gallery' ? <ImageIcon /> : post.category === 'news' ? <Newspaper /> : <CalendarIcon />}
+                                      <Newspaper />
                                    </div>
                                  )}
                               </div>
@@ -248,13 +299,13 @@ export default function Admin() {
                                    <span className="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/5 px-2 py-0.5 rounded-md">
                                      {post.category}
                                    </span>
-                                   <span className="text-slate-300 text-[10px]">{new Date(post.createdAt).toLocaleDateString()}</span>
+                                   <span className="text-slate-300 text-[10px]">{new Date(post.created_at).toLocaleDateString()}</span>
                                  </div>
                                  <h3 className="text-lg font-bold text-primary">{post.title}</h3>
-                                 <p className="text-slate-500 text-sm line-clamp-1">{post.description}</p>
+                                 <p className="text-slate-500 text-sm line-clamp-1">{post.excerpt}</p>
                               </div>
                               <button 
-                                onClick={() => handleDeletePost(post.id)}
+                                onClick={() => handleDeletePost(post.id, 'post')}
                                 className="p-4 bg-slate-50 text-slate-400 hover:bg-accent/10 hover:text-accent rounded-2xl transition-all"
                               >
                                 <Trash2 size={20} />
@@ -264,7 +315,64 @@ export default function Admin() {
                        )}
                     </div>
                   </motion.div>
-                ) : (
+                )}
+
+                {activeTab === 'gallery' && (
+                  <motion.div 
+                    key="gallery"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="space-y-8"
+                  >
+                    <div className="flex items-center justify-between">
+                       <h2 className="text-2xl font-bold text-primary">Gallery Content</h2>
+                       <button 
+                        onClick={() => { setFormType('gallery'); setIsAdding(true); }}
+                        className="bg-accent text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-red-700 shadow-lg shadow-accent/20 transition-all"
+                       >
+                         <Plus size={20} />
+                         Add Media
+                       </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       {gallery.length === 0 ? (
+                         <div className="bg-white p-20 rounded-[40px] text-center space-y-4 border border-dashed border-slate-200 col-span-2">
+                            <h3 className="text-xl font-bold text-slate-400">No gallery items found.</h3>
+                         </div>
+                       ) : (
+                         gallery.map((gItem) => (
+                           <div key={gItem.id} className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-xl transition-all">
+                              <div className="w-20 h-20 bg-slate-50 rounded-2xl overflow-hidden shrink-0 border border-slate-100">
+                                 {gItem.media_type === 'image' ? (
+                                   <img src={gItem.media_url} className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-slate-300">
+                                      <ImageIcon />
+                                   </div>
+                                 )}
+                              </div>
+                              <div className="flex-grow space-y-1">
+                                 <span className="text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/5 px-2 py-0.5 rounded-md">
+                                   {gItem.media_type}
+                                 </span>
+                                 <h3 className="text-sm font-bold text-primary line-clamp-1">{gItem.title}</h3>
+                              </div>
+                              <button 
+                                onClick={() => handleDeletePost(gItem.id, 'gallery')}
+                                className="p-3 bg-slate-50 text-slate-400 hover:bg-accent/10 hover:text-accent rounded-xl transition-all"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                           </div>
+                         ))
+                       )}
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeTab === 'settings' && (
                   <motion.div 
                     key="settings"
                     initial={{ opacity: 0, y: 10 }}
@@ -316,73 +424,110 @@ export default function Admin() {
             >
               <div className="p-10 space-y-8">
                 <div className="flex items-center justify-between">
-                   <h2 className="text-2xl font-bold text-primary">New Content Post</h2>
+                   <h2 className="text-2xl font-bold text-primary">
+                     {formType === 'gallery' ? 'Add to Gallery' : `Add ${formType === 'news' ? 'News' : 'Event'}`}
+                   </h2>
                    <button onClick={() => setIsAdding(false)} className="text-slate-300 hover:text-slate-600">
                       <X size={32} />
                    </button>
                 </div>
 
                 <form onSubmit={handleAddPost} className="space-y-6">
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <div className="grid grid-cols-1 gap-6">
                       <div className="space-y-2">
                         <label className="text-sm font-bold text-slate-700 ml-1">Title</label>
                         <input 
                           required 
-                          placeholder="Post Title" 
-                          value={newPost.title}
-                          onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+                          placeholder="Title" 
+                          value={formData.title}
+                          onChange={(e) => setFormData({...formData, title: e.target.value})}
                           className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
                         />
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-700 ml-1">Category</label>
-                        <select 
-                          value={newPost.category}
-                          onChange={(e) => setNewPost({...newPost, category: e.target.value as any})}
-                          className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all"
-                        >
-                          <option value="gallery">Gallery</option>
-                          <option value="news">News</option>
-                          <option value="event">Event</option>
-                        </select>
-                      </div>
+
+                      {formType === 'gallery' ? (
+                        <>
+                          <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-700 ml-1">Media Type</label>
+                            <select 
+                              value={formData.mediaType}
+                              onChange={(e) => setFormData({...formData, mediaType: e.target.value})}
+                              className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                            >
+                              <option value="image">Image Upload</option>
+                              <option value="video">Video Link</option>
+                            </select>
+                          </div>
+
+                          {formData.mediaType === 'image' ? (
+                            <div className="space-y-2">
+                              <label className="text-sm font-bold text-slate-700 ml-1">Upload Image</label>
+                              <div className="w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl px-6 py-6 text-center hover:bg-slate-100 transition-colors relative cursor-pointer">
+                                 <input type="file" accept="image/*" required onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                                 <div className="flex flex-col items-center gap-2 text-slate-500">
+                                   <Upload size={24} />
+                                   <span className="font-medium text-sm">Click to Browse or Drag Image Here</span>
+                                   {fileBase64 && <span className="text-green-600 text-xs mt-2">Image Selected Successfully!</span>}
+                                 </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold text-slate-700 ml-1">Video Link (YouTube/Drive url)</label>
+                                <input 
+                                  required
+                                  placeholder="https://youtube.com/..." 
+                                  value={formData.mediaUrl}
+                                  onChange={(e) => setFormData({...formData, mediaUrl: e.target.value})}
+                                  className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
+                                />
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-700 ml-1">Category</label>
+                            <select 
+                              value={formType}
+                              onChange={(e) => setFormType(e.target.value as ContentType)}
+                              className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                            >
+                              <option value="news">News</option>
+                              <option value="event">Event</option>
+                            </select>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-700 ml-1">Description / Excerpt</label>
+                            <textarea 
+                              required 
+                              rows={3} 
+                              placeholder="Brief description..." 
+                              value={formData.excerpt}
+                              onChange={(e) => setFormData({...formData, excerpt: e.target.value})}
+                              className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all resize-none"
+                            ></textarea>
+                          </div>
+
+                          <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-700 ml-1">Cover Image (Optional)</label>
+                            <div className="w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl px-6 py-6 text-center hover:bg-slate-100 transition-colors relative cursor-pointer">
+                                <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                                <div className="flex flex-col items-center gap-2 text-slate-500">
+                                  <Upload size={24} />
+                                  <span className="font-medium text-sm">Click to Upload Cover Image</span>
+                                  {fileBase64 && <span className="text-green-600 text-xs mt-2">Image Selected Successfully!</span>}
+                                </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
                    </div>
 
-                   <div className="space-y-2">
-                      <label className="text-sm font-bold text-slate-700 ml-1">Description</label>
-                      <textarea 
-                        required 
-                        rows={3} 
-                        placeholder="What is this about?" 
-                        value={newPost.description}
-                        onChange={(e) => setNewPost({...newPost, description: e.target.value})}
-                        className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all resize-none"
-                      ></textarea>
-                   </div>
-
-                   <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-700 ml-1">Image URL (Optional)</label>
-                        <input 
-                          placeholder="https://images.unsplash.com/..." 
-                          value={newPost.imageUrl}
-                          onChange={(e) => setNewPost({...newPost, imageUrl: e.target.value})}
-                          className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
-                        />
-                      </div>
-
-                   <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-700 ml-1">Video Link (YouTube/Drive - Optional)</label>
-                        <input 
-                          placeholder="https://youtube.com/..." 
-                          value={newPost.videoUrl}
-                          onChange={(e) => setNewPost({...newPost, videoUrl: e.target.value})}
-                          className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
-                        />
-                      </div>
-
-                   <button className="w-full bg-accent text-white py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-red-700 transition-all shadow-xl shadow-accent/20">
+                   <button disabled={isSubmitting} className="w-full bg-accent text-white py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-red-700 transition-all shadow-xl shadow-accent/20 disabled:opacity-70 disabled:cursor-not-allowed">
                       <CheckCircle size={20} />
-                      Publish Post
+                      {isSubmitting ? 'Uploading...' : 'Publish Content'}
                    </button>
                 </form>
               </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Image, Play, X, ExternalLink } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 // Mock data for initial UI
 const initialMedia = [
@@ -18,22 +19,23 @@ export default function Gallery() {
   const [media, setMedia] = useState<any[]>(initialMedia);
 
   useEffect(() => {
-    const saved = localStorage.getItem('fis_posts');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      const galleryItems = parsed
-        .filter((p: any) => p.category === 'gallery')
-        .map((p: any) => ({
+    async function fetchGallery() {
+      if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') return;
+      
+      const { data, error } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
+      
+      if (!error && data && data.length > 0) {
+        const galleryItems = data.map((p: any) => ({
           id: p.id,
-          type: p.videoUrl ? 'video' : 'image',
-          url: p.imageUrl || p.videoUrl,
-          thumbnail: p.imageUrl || 'https://picsum.photos/seed/video/800/600',
+          type: p.media_type,
+          url: p.media_url,
+          thumbnail: p.media_type === 'image' ? p.media_url : 'https://picsum.photos/seed/video/800/600',
           title: p.title
         }));
-      if (galleryItems.length > 0) {
         setMedia(galleryItems);
       }
     }
+    fetchGallery();
   }, []);
 
   const filteredMedia = filter === 'all' ? media : media.filter(m => m.type === filter);

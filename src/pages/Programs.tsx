@@ -1,8 +1,21 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { GraduationCap, BookOpen, Globe, School, Briefcase } from 'lucide-react';
+import { GraduationCap, BookOpen, Globe, School, Briefcase, Baby } from 'lucide-react';
+import { CONTACT_INFO } from '../constants';
 
 const programCategories = [
+  {
+    title: "Early Years & Primary",
+    subtitle: "Creche, Kindergarten & Primary",
+    icon: <Baby className="text-white" size={32} />,
+    color: "bg-accent",
+    items: [
+      "Creche & Daycare Services",
+      "Interactive Kindergarten",
+      "Foundational Primary Education",
+      "Early Literacy & Numeracy"
+    ]
+  },
   {
     title: "Secondary School",
     subtitle: "Nigerian & International Curriculum",
@@ -96,10 +109,10 @@ export default function Programs() {
                 </ul>
                 <div className="mt-10 pt-10 border-t border-slate-50 flex items-center justify-between">
                   <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Global Opportunities</span>
-                  <button className="bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-accent transition-colors flex items-center gap-2">
+                  <a href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`} target="_blank" rel="noopener noreferrer" className="bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-accent transition-colors flex items-center gap-2">
                     Inquire Details
                     <BookOpen size={16} />
-                  </button>
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -115,9 +128,9 @@ export default function Programs() {
              <h2 className="text-4xl md:text-5xl font-bold max-w-3xl mx-auto">Not sure which program is right for you?</h2>
              <p className="text-xl text-white/70 max-w-xl mx-auto">Schedule a free consultation with our academic counselors today.</p>
           </div>
-          <button className="relative z-10 bg-accent text-white px-12 py-5 rounded-lg text-lg font-bold hover:shadow-xl hover:shadow-accent/20 transition-all transform hover:scale-105 active:scale-95">
+          <a href="/contact" className="relative z-10 inline-block bg-accent text-white px-12 py-5 rounded-lg text-lg font-bold hover:shadow-xl hover:shadow-accent/20 transition-all transform hover:scale-105 active:scale-95">
             Book a Free Consultation
-          </button>
+          </a>
         </div>
       </section>
     </div>
