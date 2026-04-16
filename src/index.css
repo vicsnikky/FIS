@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary: #0B2C5D;
+  --color-secondary: #FFFFFF;
+  --color-gold: #F2C94C;
+  --color-accent: #E31E24;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-slate-900 font-sans antialiased;
+    line-height: 1.6;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold tracking-tight text-primary;
+  }
+}
+
+/* Utilities for "non-cluttered" layout */
+.section-padding {
+  @apply py-24 px-6 max-w-7xl mx-auto;
+}
+
+.content-gap {
+  @apply space-y-12;
+}
