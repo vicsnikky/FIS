@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { CONTACT_INFO } from '../constants';
 import { Monitor, Library as LibraryIcon, Trophy, Code, Newspaper } from 'lucide-react';
