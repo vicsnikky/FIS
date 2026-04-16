@@ -40,12 +40,14 @@ export default function About() {
       <section className="section-padding bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=2070&auto=format&fit=crop" 
-              alt="School campus" 
-              className="rounded-3xl shadow-2xl object-cover w-full h-[500px]"
-              referrerPolicy="no-referrer"
-            />
+            <a href="https://ibb.co/nMT22VhM" target="_blank" rel="noopener noreferrer">
+              <img 
+                src="https://i.ibb.co/5hdDDzqh/Whats-App-Image-2026-04-16-at-5-05-25-PM.jpg" 
+                alt="School campus" 
+                className="rounded-3xl shadow-2xl object-cover w-full h-[500px] hover:opacity-95 transition-opacity"
+                referrerPolicy="no-referrer"
+              />
+            </a>
             <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-gold rounded-full -z-10 animate-pulse opacity-10"></div>
           </div>
           <div className="space-y-8">

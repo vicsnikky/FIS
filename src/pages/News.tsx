@@ -66,10 +66,6 @@ export default function News() {
     const email = formData.get('email') as string;
 
     try {
-      if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') {
-        throw new Error('Supabase is not configured yet. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in settings.');
-      }
-
       const { error } = await supabase
         .from('newsletter_subscribers')
         .insert([{ email }]);

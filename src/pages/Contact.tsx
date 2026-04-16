@@ -18,10 +18,6 @@ export default function Contact() {
     const message = formData.get('message') as string;
 
     try {
-      if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') {
-        throw new Error('Supabase is not configured yet. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in settings.');
-      }
-
       const { error } = await supabase
         .from('inquiries')
         .insert([{ name, email, subject, message }]);
