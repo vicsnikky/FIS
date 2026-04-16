@@ -128,7 +128,7 @@ export default function Programs() {
              <h2 className="text-4xl md:text-5xl font-bold max-w-3xl mx-auto">Not sure which program is right for you?</h2>
              <p className="text-xl text-white/70 max-w-xl mx-auto">Schedule a free consultation with our academic counselors today.</p>
           </div>
-          <a href="/contact" className="relative z-10 inline-block bg-accent text-white px-12 py-5 rounded-lg text-lg font-bold hover:shadow-xl hover:shadow-accent/20 transition-all transform hover:scale-105 active:scale-95">
+          <a href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`} target="_blank" rel="noopener noreferrer" className="relative z-10 inline-block bg-accent text-white px-12 py-5 rounded-lg text-lg font-bold hover:shadow-xl hover:shadow-accent/20 transition-all transform hover:scale-105 active:scale-95">
             Book a Free Consultation
           </a>
         </div>

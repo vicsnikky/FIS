@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
+import AIChatButton from './AIChatButton';
 import { motion } from 'motion/react';
 
 export default function Layout() {
@@ -20,6 +21,7 @@ export default function Layout() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <AIChatButton />
     </div>
   );
 }

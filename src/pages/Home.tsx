@@ -44,13 +44,13 @@ export default function Home() {
               href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto bg-accent text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-red-700 transition-all hover:scale-105 shadow-xl shadow-accent/20 active:scale-95 inline-flex justify-center"
+              className="w-full sm:w-auto bg-accent text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-gold hover:text-primary transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-gold/30 active:scale-95 inline-flex justify-center"
             >
               Enroll Today
             </a>
             <Link 
               to="/programs"
-              className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-white/20 transition-all inline-flex justify-center"
+              className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-white hover:text-primary transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-white/20 active:scale-95 inline-flex justify-center"
             >
               Explore Programs
             </Link>
