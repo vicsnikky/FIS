@@ -5,13 +5,10 @@ import { supabase } from '../lib/supabase';
 
 export default function Gallery() {
   const [selectedMedia, setSelectedMedia] = useState<any>(null);
-  const [filter, setFilter] = useState<'all' | 'image' | 'video'>('all');
   const [media, setMedia] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetchGallery() {
-      if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') return;
-      
       const { data, error } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
       
       if (!error && data) {
@@ -28,8 +25,6 @@ export default function Gallery() {
     fetchGallery();
   }, []);
 
-  const filteredMedia = filter === 'all' ? media : media.filter(m => m.type === filter);
-
   return (
     <div className="pb-20">
       {/* Page Header */}
@@ -40,25 +35,10 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Filter Tabs */}
-      <div className="flex justify-center gap-4 py-12 px-6">
-        {['all', 'image', 'video'].map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f as any)}
-            className={`px-8 py-3 rounded-full text-sm font-bold capitalize transition-all ${
-              filter === f ? 'bg-primary text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-50'
-            }`}
-          >
-            {f}s
-          </button>
-        ))}
-      </div>
-
       {/* Media Grid */}
-      <section className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="max-w-7xl mx-auto px-6 pt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence mode="popLayout">
-          {filteredMedia.length === 0 ? (
+          {media.length === 0 ? (
             <div className="col-span-full py-20 text-center">
               <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
                 <Image size={32} />
@@ -67,7 +47,7 @@ export default function Gallery() {
               <p className="text-slate-500">Check back later for photos and videos from our events.</p>
             </div>
           ) : (
-            filteredMedia.map((item) => (
+            media.map((item) => (
               <motion.div
                 layout
                 key={item.id}

@@ -9,8 +9,6 @@ export default function News() {
 
   useEffect(() => {
     async function fetchNews() {
-      if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') return;
-      
       const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
       
       if (!error && data) {
@@ -94,10 +92,6 @@ export default function News() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
-                    <Tag size={12} className="text-accent" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{post.category}</span>
-                  </div>
                 </div>
                 
                 <div className="md:col-span-7 space-y-4">

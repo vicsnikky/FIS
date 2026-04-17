@@ -42,7 +42,6 @@ export default function Admin() {
   }, [isAuthenticated]);
 
   const fetchData = async () => {
-    if (import.meta.env.VITE_SUPABASE_URL === undefined || import.meta.env.VITE_SUPABASE_URL === '') return;
     try {
       const { data: postsData } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
       if (postsData) setPosts(postsData);
@@ -96,7 +95,7 @@ export default function Admin() {
         await supabase.from('gallery').insert([payload]);
       } else {
         const payload = {
-          category: formType === 'news' ? 'News' : 'Events',
+          category: 'News',
           title: formData.title,
           excerpt: formData.excerpt,
           image_url: fileBase64
@@ -425,7 +424,7 @@ export default function Admin() {
               <div className="p-10 space-y-8">
                 <div className="flex items-center justify-between">
                    <h2 className="text-2xl font-bold text-primary">
-                     {formType === 'gallery' ? 'Add to Gallery' : `Add ${formType === 'news' ? 'News' : 'Event'}`}
+                     {formType === 'gallery' ? 'Add to Gallery' : 'Add News'}
                    </h2>
                    <button onClick={() => setIsAdding(false)} className="text-slate-300 hover:text-slate-600">
                       <X size={32} />
@@ -486,18 +485,6 @@ export default function Admin() {
                         </>
                       ) : (
                         <>
-                          <div className="space-y-2">
-                            <label className="text-sm font-bold text-slate-700 ml-1">Category</label>
-                            <select 
-                              value={formType}
-                              onChange={(e) => setFormType(e.target.value as ContentType)}
-                              className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-accent/20 outline-none transition-all"
-                            >
-                              <option value="news">News</option>
-                              <option value="event">Event</option>
-                            </select>
-                          </div>
-                          
                           <div className="space-y-2">
                             <label className="text-sm font-bold text-slate-700 ml-1">Description / Excerpt</label>
                             <textarea 
