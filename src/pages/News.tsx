@@ -3,38 +3,8 @@ import { motion } from 'motion/react';
 import { Calendar, Tag, ChevronRight, User } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-const newsPosts = [
-  {
-    id: '1',
-    category: 'News',
-    title: 'FIS Enrollment Now Open for 2024 Academic Session',
-    excerpt: 'Join the Fenster community as we open our doors for the upcoming year with new programs and expanded facilities in Nigeria.',
-    date: 'April 12, 2026',
-    author: 'Admin',
-    image: 'https://images.unsplash.com/photo-1544717297-fa95b3697628?q=80&w=2070&auto=format&fit=crop'
-  },
-  {
-    id: '2',
-    category: 'Events',
-    title: 'Study in Canada Information Session: Virtual Event',
-    excerpt: 'Learn about the visa application process and university scholarship opportunities in Alberta, Canada.',
-    date: 'May 5, 2026',
-    author: 'Counseling Dept',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop'
-  },
-  {
-    id: '3',
-    category: 'News',
-    title: 'New Vocational Training Lab Commissioned',
-    excerpt: 'FIS Nigeria expands its technical education footprint with the launch of a state-of-the-art vocational training center.',
-    date: 'March 20, 2026',
-    author: 'Principal',
-    image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=2070&auto=format&fit=crop'
-  }
-];
-
 export default function News() {
-  const [posts, setPosts] = useState<any[]>(newsPosts);
+  const [posts, setPosts] = useState<any[]>([]);
   const [newsletterStatus, setNewsletterStatus] = useState({ submitting: false, success: false, error: '' });
 
   useEffect(() => {
@@ -43,7 +13,7 @@ export default function News() {
       
       const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
       
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         const newsItems = data.map((p: any) => ({
           id: p.id,
           category: p.category,
@@ -53,7 +23,7 @@ export default function News() {
           author: p.author || 'Admin',
           image: p.image_url || 'https://images.unsplash.com/photo-1544717297-fa95b3697628?q=80&w=2070&auto=format&fit=crop'
         }));
-        setPosts((current) => [...newsItems, ...newsPosts]);
+        setPosts(newsItems);
       }
     }
     fetchNews();
@@ -99,15 +69,24 @@ export default function News() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           {/* Main List */}
           <div className="lg:col-span-8 space-y-12">
-            {posts.map((post, i) => (
-              <motion.article 
-                key={post.id}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white p-6 rounded-[40px] shadow-sm border border-slate-50 hover:shadow-2xl transition-all"
-              >
+            {posts.length === 0 ? (
+              <div className="bg-white p-20 rounded-[40px] shadow-sm border border-slate-50 text-center">
+                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
+                  <Calendar size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-700 mb-2">No news updates yet</h3>
+                <p className="text-slate-500">Check back later for the latest announcements and event schedules.</p>
+              </div>
+            ) : (
+              posts.map((post, i) => (
+                <motion.article 
+                  key={post.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white p-6 rounded-[40px] shadow-sm border border-slate-50 hover:shadow-2xl transition-all"
+                >
                 <div className="md:col-span-5 relative overflow-hidden rounded-3xl aspect-[4/3] md:aspect-square">
                    <img 
                     src={post.image} 
@@ -144,7 +123,7 @@ export default function News() {
                   </button>
                 </div>
               </motion.article>
-            ))}
+            )))}
           </div>
 
           {/* Sidebar */}

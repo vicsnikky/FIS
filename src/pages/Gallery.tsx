@@ -3,20 +3,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Image, Play, X, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-// Mock data for initial UI
-const initialMedia = [
-  { id: '1', type: 'image', url: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=2071&auto=format&fit=crop', title: 'Graduation Ceremony 2023' },
-  { id: '2', type: 'image', url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2132&auto=format&fit=crop', title: 'Science Lab Session' },
-  { id: '3', type: 'video', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop', title: 'Life at FIS Canada' },
-  { id: '4', type: 'image', url: 'https://images.unsplash.com/photo-1524178232457-3aa24d9d30ca?q=80&w=2070&auto=format&fit=crop', title: 'Inter-house Sports' },
-  { id: '5', type: 'image', url: 'https://images.unsplash.com/photo-1511629091441-ee46146481b6?q=80&w=2070&auto=format&fit=crop', title: 'School Building Nigeria' },
-  { id: '6', type: 'video', url: 'https://www.youtube.com/watch?v=uD4izufHSZI', thumbnail: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop', title: 'FIS Information Session' },
-];
-
 export default function Gallery() {
   const [selectedMedia, setSelectedMedia] = useState<any>(null);
   const [filter, setFilter] = useState<'all' | 'image' | 'video'>('all');
-  const [media, setMedia] = useState<any[]>(initialMedia);
+  const [media, setMedia] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetchGallery() {
@@ -24,7 +14,7 @@ export default function Gallery() {
       
       const { data, error } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
       
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         const galleryItems = data.map((p: any) => ({
           id: p.id,
           type: p.media_type,
@@ -68,16 +58,25 @@ export default function Gallery() {
       {/* Media Grid */}
       <section className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence mode="popLayout">
-          {filteredMedia.map((item) => (
-            <motion.div
-              layout
-              key={item.id}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="group relative cursor-pointer overflow-hidden rounded-[32px] bg-slate-100 aspect-[4/3] shadow-sm hover:shadow-2xl transition-all"
-              onClick={() => setSelectedMedia(item)}
-            >
+          {filteredMedia.length === 0 ? (
+            <div className="col-span-full py-20 text-center">
+              <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
+                <Image size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-700 mb-2">No media found</h3>
+              <p className="text-slate-500">Check back later for photos and videos from our events.</p>
+            </div>
+          ) : (
+            filteredMedia.map((item) => (
+              <motion.div
+                layout
+                key={item.id}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="group relative cursor-pointer overflow-hidden rounded-[32px] bg-slate-100 aspect-[4/3] shadow-sm hover:shadow-2xl transition-all"
+                onClick={() => setSelectedMedia(item)}
+              >
               <img
                 src={item.type === 'video' ? item.thumbnail : item.url}
                 alt={item.title}
@@ -99,7 +98,7 @@ export default function Gallery() {
                 </div>
               )}
             </motion.div>
-          ))}
+          )))}
         </AnimatePresence>
       </section>
 
