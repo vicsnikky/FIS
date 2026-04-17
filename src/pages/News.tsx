@@ -6,6 +6,16 @@ import { supabase } from '../lib/supabase';
 export default function News() {
   const [posts, setPosts] = useState<any[]>([]);
   const [newsletterStatus, setNewsletterStatus] = useState({ submitting: false, success: false, error: '' });
+  const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (id: string) => {
+    setExpandedPosts(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   useEffect(() => {
     async function fetchNews() {
@@ -57,7 +67,7 @@ export default function News() {
       {/* Page Header */}
       <section className="bg-primary py-24 px-6 text-center text-white">
         <div className="max-w-4xl mx-auto space-y-4">
-          <h1 className="text-5xl md:text-6xl font-bold">News & Events</h1>
+          <h1 className="text-5xl md:text-6xl font-bold">School News</h1>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">Stay connected with the latest updates, achievements, and upcoming activities at FIS.</p>
         </div>
       </section>
@@ -108,12 +118,15 @@ export default function News() {
                   <h2 className="text-2xl md:text-3xl font-bold text-primary group-hover:text-accent transition-colors leading-tight">
                     {post.title}
                   </h2>
-                  <p className="text-slate-500 line-clamp-2 md:line-clamp-3 leading-relaxed">
+                  <p className={`text-slate-500 leading-relaxed whitespace-pre-wrap ${expandedPosts.has(post.id) ? '' : 'line-clamp-2 md:line-clamp-3'}`}>
                     {post.excerpt}
                   </p>
-                  <button className="flex items-center gap-2 text-primary font-bold hover:text-accent transition-colors pt-2 group/btn">
-                    Read Full Story
-                    <ChevronRight size={18} className="transform group-hover/btn:translate-x-1 transition-transform" />
+                  <button 
+                    onClick={() => toggleExpand(post.id)}
+                    className="flex items-center gap-2 text-primary font-bold hover:text-accent transition-colors pt-2 group/btn"
+                  >
+                    {expandedPosts.has(post.id) ? 'Show Less' : 'Read Full Story'}
+                    <ChevronRight size={18} className={`transform transition-transform ${expandedPosts.has(post.id) ? 'rotate-90' : 'group-hover/btn:translate-x-1'}`} />
                   </button>
                 </div>
               </motion.article>
@@ -145,24 +158,6 @@ export default function News() {
                    {newsletterStatus.submitting ? 'Subscribing...' : 'Subscribe Now'}
                  </button>
               </form>
-            </div>
-
-            {/* Categories */}
-            <div className="bg-white p-10 rounded-[40px] shadow-sm border border-slate-100 space-y-6">
-              <h3 className="text-xl font-bold text-primary">Categories</h3>
-              <ul className="space-y-4">
-                 {[
-                   { name: 'All News', count: 12 },
-                   { name: 'Academics', count: 5 },
-                   { name: 'Events', count: 8 },
-                   { name: 'Admissions', count: 3 }
-                 ].map((cat) => (
-                   <li key={cat.name} className="flex justify-between items-center group cursor-pointer">
-                      <span className="text-slate-600 group-hover:text-primary font-medium transition-colors">{cat.name}</span>
-                      <span className="bg-slate-50 text-slate-400 px-3 py-1 rounded-lg text-xs font-bold group-hover:bg-gold group-hover:text-primary transition-all">{cat.count}</span>
-                   </li>
-                 ))}
-              </ul>
             </div>
           </div>
         </div>

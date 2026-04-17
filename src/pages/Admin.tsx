@@ -230,7 +230,7 @@ export default function Admin() {
                )}
              >
                <Newspaper size={20} />
-               News & Events
+               News
              </button>
              <button 
                onClick={() => setActiveTab('gallery')}
@@ -266,7 +266,7 @@ export default function Admin() {
                     className="space-y-8"
                   >
                     <div className="flex items-center justify-between">
-                       <h2 className="text-2xl font-bold text-primary">News & Events</h2>
+                       <h2 className="text-2xl font-bold text-primary">School News</h2>
                        <button 
                         onClick={() => { setFormType('news'); setIsAdding(true); }}
                         className="bg-accent text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-red-700 shadow-lg shadow-accent/20 transition-all"
