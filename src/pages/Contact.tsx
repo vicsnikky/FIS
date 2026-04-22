@@ -143,18 +143,24 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Map Placeholder */}
+      {/* Map/Campus Image */}
       <section className="max-w-7xl mx-auto px-6 mb-20">
-        <div className="w-full h-[400px] bg-slate-100 rounded-[40px] flex items-center justify-center overflow-hidden border border-slate-200">
+        <div className="w-full h-[500px] bg-slate-100 rounded-[40px] flex items-center justify-center overflow-hidden border border-slate-200 relative group">
            <img 
-            src="https://picsum.photos/seed/school-map/1200/400" 
-            alt="Map location" 
-            className="w-full h-full object-cover opacity-50 grayscale"
+            src="https://i.ibb.co/bMzx4VJ7/Screenshot-20260422-181318-Whats-App.jpg" 
+            alt="Nigeria Campus" 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             referrerPolicy="no-referrer"
           />
-           <div className="absolute flex flex-col items-center gap-2 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg border border-slate-100">
-             <MapPin className="text-accent" />
-             <span className="text-sm font-bold text-primary">Visit our Nigeria Campus</span>
+           <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
+           <div className="absolute bottom-10 left-10 flex items-center gap-4 bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20 shadow-2xl">
+             <div className="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center text-white">
+               <MapPin size={24} />
+             </div>
+             <div className="text-white">
+               <p className="text-sm font-bold uppercase tracking-widest opacity-70">Nigeria Campus Location</p>
+               <h4 className="text-xl font-bold">Visit us today for academic excellence</h4>
+             </div>
            </div>
         </div>
       </section>

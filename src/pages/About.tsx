@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Shield, Target, Eye, Award } from 'lucide-react';
+import { Shield, Target, Eye, Award, MapPin } from 'lucide-react';
 
 const values = [
   { 
@@ -40,14 +40,18 @@ export default function About() {
       <section className="section-padding bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="relative">
-            <a href="https://ibb.co/nMT22VhM" target="_blank" rel="noopener noreferrer">
-              <img 
-                src="https://i.ibb.co/5hdDDzqh/Whats-App-Image-2026-04-16-at-5-05-25-PM.jpg" 
-                alt="School campus" 
-                className="rounded-3xl shadow-2xl object-cover w-full h-[500px] hover:opacity-95 transition-opacity"
-                referrerPolicy="no-referrer"
-              />
-            </a>
+            <img 
+              src="https://i.ibb.co/bMzx4VJ7/Screenshot-20260422-181318-Whats-App.jpg" 
+              alt="Fenster International School Nigeria Campus" 
+              className="rounded-[40px] shadow-2xl object-cover w-full h-[550px]"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4">
+              <div className="w-10 h-10 bg-accent flex items-center justify-center rounded-lg text-white">
+                <MapPin size={20} />
+              </div>
+              <p className="text-xs font-bold text-primary uppercase tracking-widest">Nigeria Main Campus</p>
+            </div>
             <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-gold rounded-full -z-10 animate-pulse opacity-10"></div>
           </div>
           <div className="space-y-8">
@@ -163,7 +167,7 @@ export default function About() {
             {
               name: 'Mrs. Sanni Olaitan',
               role: 'Bursar / Resource Manager',
-              image: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?q=80&w=1968&auto=format&fit=crop'
+              image: 'https://i.ibb.co/39H7FpGZ/file-00000000cc3471fdbbe9feee2ccb239e.png'
             }
           ].map((leader, i) => (
             <motion.div 
