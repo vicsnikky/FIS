@@ -162,7 +162,7 @@ export default function About() {
             {
               name: 'Mr. Peterson Samuel Kelvin',
               role: 'Vice Principal / Assistant School Administrator / Head of Staff',
-              image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1974&auto=format&fit=crop'
+              image: 'https://i.ibb.co/gF3qyV7v/file-00000000f61071f49f632eb77eaee58e.png'
             },
             {
               name: 'Mrs. Sanni Olaitan',
