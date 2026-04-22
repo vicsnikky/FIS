@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 
 export default function News() {
   const [posts, setPosts] = useState<any[]>([]);
-  const [newsletterStatus, setNewsletterStatus] = useState({ submitting: false, success: false, error: '' });
+  const [newsletters, setNewsletters] = useState<any[]>([]);
   const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
 
   const toggleExpand = (id: string) => {
@@ -18,11 +18,10 @@ export default function News() {
   };
 
   useEffect(() => {
-    async function fetchNews() {
-      const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
-      
-      if (!error && data) {
-        const newsItems = data.map((p: any) => ({
+    async function fetchContent() {
+      const { data: newsData } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+      if (newsData) {
+        const newsItems = newsData.map((p: any) => ({
           id: p.id,
           category: p.category,
           title: p.title,
@@ -33,34 +32,14 @@ export default function News() {
         }));
         setPosts(newsItems);
       }
-    }
-    fetchNews();
-  }, []);
 
-  const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setNewsletterStatus({ submitting: true, success: false, error: '' });
-    
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-
-    try {
-      const { error } = await supabase
-        .from('newsletter_subscribers')
-        .insert([{ email }]);
-
-      if (error) {
-        if (error.code === '23505') throw new Error('You are already subscribed!');
-        throw error;
+      const { data: newsletterData } = await supabase.from('newsletters').select('*').order('created_at', { ascending: false });
+      if (newsletterData) {
+        setNewsletters(newsletterData);
       }
-      
-      setNewsletterStatus({ submitting: false, success: true, error: '' });
-      e.currentTarget.reset();
-    } catch (err: any) {
-      console.error('Error subscribing:', err);
-      setNewsletterStatus({ submitting: false, success: false, error: err.message || 'Subscription failed.' });
     }
-  };
+    fetchContent();
+  }, []);
 
   return (
     <div className="pb-20">
@@ -135,29 +114,43 @@ export default function News() {
 
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12">
-            {/* Newsletter */}
-            <div className="bg-primary p-10 rounded-[40px] text-white space-y-6 shadow-2xl relative overflow-hidden">
+            {/* Newsletter Download Section */}
+            <div className="bg-primary p-10 rounded-[40px] text-white space-y-8 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gold rounded-full translate-x-16 -translate-y-16 opacity-10"></div>
-              <h3 className="text-2xl font-bold relative z-10">FIS Newsletter</h3>
-              <p className="text-white/80 relative z-10">Subscribe to get school updates and Canada study tips delivered to your inbox.</p>
-              
-              {newsletterStatus.success && (
-                <div className="p-3 bg-green-500/20 text-green-100 rounded-xl border border-green-500/30 text-sm relative z-10">
-                  Subscribed successfully!
-                </div>
-              )}
-              {newsletterStatus.error && (
-                <div className="p-3 bg-red-500/20 text-red-100 rounded-xl border border-red-500/30 text-sm relative z-10">
-                  {newsletterStatus.error}
-                </div>
-              )}
+              <div className="relative z-10 space-y-4">
+                <h3 className="text-2xl font-bold">School Newsletters</h3>
+                <p className="text-white/80 text-sm">Download our latest newsletters to keep up with school developments and academic schedules.</p>
+              </div>
 
-              <form onSubmit={handleNewsletterSubmit} className="space-y-3 relative z-10">
-                 <input type="email" name="email" required placeholder="Your Email" className="w-full bg-white border border-white rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-gold text-slate-800 placeholder:text-slate-400" />
-                 <button disabled={newsletterStatus.submitting} type="submit" className="w-full bg-accent text-white py-4 rounded-2xl font-bold hover:shadow-xl hover:shadow-accent/20 active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed">
-                   {newsletterStatus.submitting ? 'Subscribing...' : 'Subscribe Now'}
-                 </button>
-              </form>
+              <div className="space-y-4 relative z-10">
+                {newsletters.length === 0 ? (
+                  <div className="bg-white/5 border border-white/10 p-6 rounded-2xl text-center">
+                    <p className="text-white/40 text-xs italic">No newsletters available for download yet.</p>
+                  </div>
+                ) : (
+                  newsletters.map((nl) => (
+                    <a 
+                      key={nl.id}
+                      href={nl.file_url} 
+                      download={`${nl.title}.pdf`}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between bg-white/10 hover:bg-white/20 p-5 rounded-2xl border border-white/10 transition-all group"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center text-white shrink-0">
+                          <Tag size={18} />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-sm line-clamp-1">{nl.title}</span>
+                          <span className="text-[10px] text-white/50">{new Date(nl.created_at).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                      <ChevronRight size={18} className="text-white/30 group-hover:text-gold transition-colors" />
+                    </a>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
