@@ -52,57 +52,132 @@ export default function About() {
           </div>
           <div className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary">A Legacy of Quality Education</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary">Fenster International School</h2>
               <div className="w-20 h-1.5 bg-gold rounded-full"></div>
             </div>
             <p className="text-lg text-slate-600 leading-relaxed">
-              Fenster International School (FIS) was founded with a singular purpose: to bridge the gap between local educational standards and global opportunities. With campuses in Nigeria and Canada, we offer a truly international experience that prepares students for the challenges of tomorrow.
+              Fenster International School was established in 2017 and received government approval on 9th January 2018 to commence full operations for Nursery and Primary education. In July of the same year, the school also obtained approval to run Senior Secondary School programmes.
             </p>
             <p className="text-lg text-slate-600 leading-relaxed">
-              Our holistic approach ensures that students are not only academically proficient but also socially responsible and culturally aware. We prioritize personal growth, leadership development, and vocational mastery through our <strong>standard ICT facility, library, and world-class sport facilities</strong>.
+              The school is located at 1 & 5, Kolade Adedeji Street, Jaffa Bus Stop, Ope-Ilu Road, Agbado Station, Ogun State. With over 270 pupils and students, the school provides a friendly, safe, and serene environment that supports effective learning and character development.
+            </p>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              Fenster International School is committed to building a bridge between who a child is today and who they will become tomorrow. The school is overseen by a Board of Directors made up of experienced professionals who formulate policies, while the day-to-day administration is handled by the management team led by the Principal and Vice Principals.
+            </p>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              Admission is open to students within the community, across Nigeria, and from overseas. The school is well equipped with qualified teachers and modern facilities including science laboratories, a well-stocked library, ICT facilities, STEM learning resources, separate hostels for boys and girls, and school buses, all designed to support academic excellence and the holistic development of every child.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
+      {/* Mission, Vision & Path */}
       <section className="bg-white py-24 px-6 border-y border-slate-100">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-white p-12 rounded-[40px] shadow-sm border border-slate-100 space-y-6 group hover:shadow-xl transition-all">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white p-10 rounded-[32px] shadow-sm border border-slate-100 space-y-6 group hover:shadow-xl transition-all">
             <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-gold mb-4 group-hover:scale-110 transition-transform">
               <Target size={32} />
             </div>
-            <h3 className="text-3xl font-bold text-primary">Our Mission</h3>
-            <p className="text-slate-600 text-lg leading-relaxed italic font-light">
-              "To empower students through high-quality, international standard education that prepares them to study, work, and thrive in a global environment, specifically fostering pathways between Nigeria and Canada."
+            <h3 className="text-2xl font-bold text-primary">The Mission</h3>
+            <p className="text-slate-600 leading-relaxed italic font-light">
+              "To deliver world class education to children: inspire, challenge, and empower students and staff in a safe, supportive environment, inculcate high moral and ethical values in our students as we prepare them for a life of service and fulfillment, and graduate students who attain the high standards set forth for national and international opportunities."
             </p>
           </div>
-          <div className="bg-white p-12 rounded-[40px] shadow-sm border border-slate-100 space-y-6 group hover:shadow-xl transition-all">
+          <div className="bg-white p-10 rounded-[32px] shadow-sm border border-slate-100 space-y-6 group hover:shadow-xl transition-all">
             <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
               <Eye size={32} />
             </div>
-            <h3 className="text-3xl font-bold text-primary">Our Vision</h3>
-            <p className="text-slate-600 text-lg leading-relaxed italic font-light">
-              "To be a leading global educational hub recognized for academic excellence, innovative teaching, and being the primary bridge for students seeking international career and life opportunities."
+            <h3 className="text-2xl font-bold text-primary">The Vision</h3>
+            <p className="text-slate-600 leading-relaxed italic font-light">
+              "To become a world class school with a serenely conducive environment and modern infrastructure driven by highly competent and qualified teaching and non-teaching staff with tenacious passion for child development."
+            </p>
+          </div>
+          <div className="bg-white p-10 rounded-[32px] shadow-sm border border-slate-100 space-y-6 group hover:shadow-xl transition-all">
+            <div className="w-16 h-16 bg-gold/10 rounded-2xl flex items-center justify-center text-gold mb-4 group-hover:scale-110 transition-transform">
+              <Shield size={32} />
+            </div>
+            <h3 className="text-2xl font-bold text-primary">Our Path</h3>
+            <p className="text-slate-600 leading-relaxed italic font-light">
+              "We guide our students toward a successful future by connecting them with higher institutions both locally and internationally through the support of capable and well-informed Admission Officers. Through this process, we ease the burden on parents by handling the complexities of first-degree admission procedures within and outside the country."
             </p>
           </div>
         </div>
       </section>
 
       {/* Values */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-slate-50">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl font-bold text-primary">Our Core Values</h2>
           <p className="text-slate-500">The pillars that define the Fenster experience.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((v, i) => (
-            <div key={i} className="text-center space-y-6 p-8 rounded-3xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100">
+            <div key={i} className="bg-white text-center space-y-6 p-8 rounded-[32px] shadow-sm hover:shadow-xl transition-all border border-slate-50">
               <div className="w-16 h-16 mx-auto bg-gold/10 rounded-2xl flex items-center justify-center">
                 {v.icon}
               </div>
               <h4 className="text-xl font-bold text-primary">{v.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{v.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Leadership */}
+      <section className="section-padding bg-white border-t border-slate-100">
+        <div className="text-center mb-16 space-y-4">
+          <h2 className="text-4xl font-bold text-primary tracking-tight">Meet Our Leaders</h2>
+          <div className="w-20 h-1.5 bg-gold rounded-full mx-auto"></div>
+          <p className="text-slate-500 max-w-2xl mx-auto pt-4">
+            The visionary team of experienced professionals shaping the future of our students and institution.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+          {[
+            {
+              name: 'Mr. Kazeem Olabanji Salami',
+              role: 'Chairman and Founder',
+              image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop'
+            },
+            {
+              name: 'Miss Mojisola Racheal Salami',
+              role: 'Executive Director',
+              image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop'
+            },
+            {
+              name: 'Mrs. Ibiyemi Kehinde',
+              role: 'Senior Principal / School Administrator',
+              image: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?q=80&w=2070&auto=format&fit=crop'
+            },
+            {
+              name: 'Mrs. Sanni Olaitan',
+              role: 'Bursar / Resource Manager',
+              image: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?q=80&w=1968&auto=format&fit=crop'
+            },
+            {
+              name: 'Mr. Peterson Samuel Kelvin',
+              role: 'Vice Principal / Assistant School Administrator / Head of Staff',
+              image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1974&auto=format&fit=crop'
+            },
+            {
+              name: 'Mr. Odewale Daniel',
+              role: 'Vice Principal / Academics',
+              image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop'
+            }
+          ].map((leader, i) => (
+            <div key={i} className="group bg-slate-50 rounded-[40px] overflow-hidden hover:bg-primary transition-colors duration-500">
+              <div className="aspect-[4/5] overflow-hidden m-4 rounded-[32px] bg-slate-200">
+                <img 
+                  src={leader.image} 
+                  alt={leader.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter grayscale group-hover:grayscale-0"
+                />
+              </div>
+              <div className="p-8 pt-4 text-center">
+                <h3 className="font-bold text-xl text-primary group-hover:text-gold transition-colors">{leader.name}</h3>
+                <p className="text-slate-500 text-sm mt-2 font-medium group-hover:text-white/80 transition-colors uppercase tracking-wider">{leader.role}</p>
+              </div>
             </div>
           ))}
         </div>
