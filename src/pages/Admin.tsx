@@ -17,13 +17,12 @@ export default function Admin() {
   // Dashboard state
   const [posts, setPosts] = useState<any[]>([]);
   const [gallery, setGallery] = useState<any[]>([]);
-  const [newsletters, setNewsletters] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'posts' | 'gallery' | 'newsletters' | 'settings'>('posts');
+  const [activeTab, setActiveTab] = useState<'posts' | 'gallery' | 'settings'>('posts');
   const [isAdding, setIsAdding] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // New Item Form
-  type ContentType = 'news' | 'event' | 'gallery' | 'newsletter';
+  type ContentType = 'news' | 'event' | 'gallery';
   const [formType, setFormType] = useState<ContentType>('news');
   const [formData, setFormData] = useState({
     title: '',
@@ -49,9 +48,6 @@ export default function Admin() {
 
       const { data: galleryData } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
       if (galleryData) setGallery(galleryData);
-
-      const { data: newsletterData } = await supabase.from('newsletters').select('*').order('created_at', { ascending: false });
-      if (newsletterData) setNewsletters(newsletterData);
     } catch (err) {
       console.error(err);
     }
@@ -97,12 +93,6 @@ export default function Admin() {
           media_url: formData.mediaType === 'image' ? fileBase64 : formData.mediaUrl
         };
         await supabase.from('gallery').insert([payload]);
-      } else if (formType === 'newsletter') {
-        const payload = {
-          title: formData.title,
-          file_url: fileBase64
-        };
-        await supabase.from('newsletters').insert([payload]);
       } else {
         const payload = {
           category: 'News',
@@ -117,7 +107,7 @@ export default function Admin() {
       setIsAdding(false);
       setFormData({ title: '', excerpt: '', mediaType: 'image', mediaUrl: '' });
       setFileBase64('');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding content:', error);
       alert('Failed to add content. Make sure Supabase is connected.');
     } finally {
@@ -125,12 +115,10 @@ export default function Admin() {
     }
   };
 
-  const handleDeletePost = async (id: string, type: 'post' | 'gallery' | 'newsletter') => {
+  const handleDeletePost = async (id: string, type: 'post' | 'gallery') => {
     if (window.confirm('Are you sure you want to delete this content?')) {
       if (type === 'post') {
         await supabase.from('posts').delete().eq('id', id);
-      } else if (type === 'newsletter') {
-        await supabase.from('newsletters').delete().eq('id', id);
       } else {
         await supabase.from('gallery').delete().eq('id', id);
       }
@@ -253,16 +241,6 @@ export default function Admin() {
              >
                <ImagePlus size={20} />
                Gallery
-             </button>
-             <button 
-               onClick={() => setActiveTab('newsletters')}
-               className={cn(
-                 "w-full flex items-center gap-4 px-8 py-5 rounded-3xl font-bold transition-all",
-                 activeTab === 'newsletters' ? "bg-white text-primary shadow-xl" : "text-slate-500 hover:bg-white/50"
-               )}
-             >
-               <Tag size={20} />
-               Newsletters
              </button>
              <button 
                onClick={() => setActiveTab('settings')}
@@ -393,55 +371,6 @@ export default function Admin() {
                   </motion.div>
                 )}
 
-                 {activeTab === 'newsletters' && (
-                  <motion.div 
-                    key="newsletters"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="space-y-8"
-                  >
-                    <div className="flex items-center justify-between">
-                       <h2 className="text-2xl font-bold text-primary">Manage Newsletters</h2>
-                       <button 
-                        onClick={() => { setFormType('newsletter'); setIsAdding(true); }}
-                        className="bg-accent text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-red-700 shadow-lg shadow-accent/20 transition-all"
-                       >
-                         <Plus size={20} />
-                         Upload Newsletter
-                       </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                       {newsletters.length === 0 ? (
-                         <div className="bg-white p-20 rounded-[40px] text-center space-y-4 border border-dashed border-slate-200 col-span-2">
-                            <h3 className="text-xl font-bold text-slate-400">No newsletters found.</h3>
-                         </div>
-                       ) : (
-                         newsletters.map((nl) => (
-                           <div key={nl.id} className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-xl transition-all">
-                              <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white">
-                                  <Tag size={20} />
-                                </div>
-                                <div>
-                                  <h3 className="font-bold text-primary">{nl.title}</h3>
-                                  <p className="text-[10px] text-slate-400">{new Date(nl.created_at).toLocaleDateString()}</p>
-                                </div>
-                              </div>
-                              <button 
-                                onClick={() => handleDeletePost(nl.id, 'newsletter')}
-                                className="p-3 bg-slate-50 text-slate-400 hover:bg-accent/10 hover:text-accent rounded-xl transition-all"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                           </div>
-                         ))
-                       )}
-                    </div>
-                  </motion.div>
-                )}
-
                 {activeTab === 'settings' && (
                   <motion.div 
                     key="settings"
@@ -495,7 +424,7 @@ export default function Admin() {
               <div className="p-10 space-y-8">
                 <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-bold text-primary">
-                      {formType === 'gallery' ? 'Add to Gallery' : formType === 'newsletter' ? 'Upload Newsletter' : 'Add News'}
+                      {formType === 'gallery' ? 'Add to Gallery' : 'Add News'}
                     </h2>
                    <button onClick={() => setIsAdding(false)} className="text-slate-300 hover:text-slate-600">
                       <X size={32} />
@@ -515,7 +444,7 @@ export default function Admin() {
                         />
                       </div>
 
-                      {formType === 'gallery' ? (
+                       {formType === 'gallery' ? (
                         <>
                           <div className="space-y-2">
                             <label className="text-sm font-bold text-slate-700 ml-1">Media Type</label>
@@ -554,18 +483,6 @@ export default function Admin() {
                             </div>
                           )}
                         </>
-                       ) : formType === 'newsletter' ? (
-                        <div className="space-y-2">
-                          <label className="text-sm font-bold text-slate-700 ml-1">Upload Newsletter (PDF/Image)</label>
-                          <div className="w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl px-6 py-6 text-center hover:bg-slate-100 transition-colors relative cursor-pointer">
-                              <input type="file" accept="application/pdf,image/*" required onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-                              <div className="flex flex-col items-center gap-2 text-slate-500">
-                                <Upload size={24} />
-                                <span className="font-medium text-sm">Click to Browse or Drag File Here</span>
-                                {fileBase64 && <span className="text-green-600 text-xs mt-2">File Ready for Upload!</span>}
-                              </div>
-                          </div>
-                        </div>
                       ) : (
                         <>
                           <div className="space-y-2">
