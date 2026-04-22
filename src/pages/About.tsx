@@ -151,9 +151,9 @@ export default function About() {
               image: 'https://i.ibb.co/Q3Rk7nKM/ibiyemi.jpg'
             },
             {
-              name: 'Mrs. Sanni Olaitan',
-              role: 'Bursar / Resource Manager',
-              image: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?q=80&w=1968&auto=format&fit=crop'
+              name: 'Mr. Odewale Daniel',
+              role: 'Vice Principal / Academics',
+              image: 'https://i.ibb.co/C56th6dH/IMG-20260422-WA0020.jpg'
             },
             {
               name: 'Mr. Peterson Samuel Kelvin',
@@ -161,9 +161,9 @@ export default function About() {
               image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1974&auto=format&fit=crop'
             },
             {
-              name: 'Mr. Odewale Daniel',
-              role: 'Vice Principal / Academics',
-              image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop'
+              name: 'Mrs. Sanni Olaitan',
+              role: 'Bursar / Resource Manager',
+              image: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?q=80&w=1968&auto=format&fit=crop'
             }
           ].map((leader, i) => (
             <motion.div 
