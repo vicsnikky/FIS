@@ -13,10 +13,10 @@ export default function Home() {
           <img 
             src={CONTACT_INFO.heroBg} 
             alt="Students at Fenster International School" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover object-top opacity-50"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/95 via-primary/70 to-white"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary/50 to-white"></div>
         </div>
         
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center text-white space-y-8">
@@ -87,14 +87,14 @@ export default function Home() {
           <div className="relative">
             <div className="absolute -top-6 -left-6 w-32 h-32 bg-accent/10 rounded-3xl -z-10"></div>
             <img 
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" 
+              src="https://i.ibb.co/wNLGC48G/Whats-App-Image-2026-04-22-at-3-10-41-PM.jpg" 
               alt="Collaboration at FIS" 
               className="rounded-3xl shadow-2xl object-cover w-full h-[400px]"
               referrerPolicy="no-referrer"
             />
             <div className="absolute -bottom-6 -right-6 bg-white p-8 rounded-2xl shadow-xl flex items-center gap-4 max-w-xs">
               <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-xl text-white font-bold text-2xl">
-                10+
+                8+
               </div>
               <p className="text-sm font-semibold text-slate-800">Years of Educational Excellence</p>
             </div>
