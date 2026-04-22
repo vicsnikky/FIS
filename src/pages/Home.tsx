@@ -167,8 +167,8 @@ export default function Home() {
             <div className="relative">
               <div className="aspect-[4/5] rounded-[40px] overflow-hidden shadow-2xl border-4 border-white/10 relative group">
                 <img 
-                  src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Students in library" 
+                  src="https://i.ibb.co/3myw6Wjr/Whats-App-Image-2026-04-22-at-3-10-44-PM.jpg" 
+                  alt="Students learning" 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                   referrerPolicy="no-referrer"
                 />

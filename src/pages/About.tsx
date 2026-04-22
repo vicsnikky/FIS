@@ -166,19 +166,26 @@ export default function About() {
               image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop'
             }
           ].map((leader, i) => (
-            <div key={i} className="group bg-slate-50 rounded-[40px] overflow-hidden hover:bg-primary transition-colors duration-500">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.7, delay: i * 0.1, ease: 'easeOut' }}
+              key={i} 
+              className="group bg-slate-50 rounded-[40px] overflow-hidden hover:bg-primary transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-primary/20"
+            >
               <div className="aspect-[4/5] overflow-hidden m-4 rounded-[32px] bg-slate-200">
                 <img 
                   src={leader.image} 
                   alt={leader.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter grayscale group-hover:grayscale-0"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 filter grayscale group-hover:grayscale-0"
                 />
               </div>
-              <div className="p-8 pt-4 text-center">
-                <h3 className="font-bold text-xl text-primary group-hover:text-gold transition-colors">{leader.name}</h3>
-                <p className="text-slate-500 text-sm mt-2 font-medium group-hover:text-white/80 transition-colors uppercase tracking-wider">{leader.role}</p>
+              <div className="p-8 pt-4 text-center transform transition-transform duration-500 group-hover:-translate-y-1">
+                <h3 className="font-bold text-xl text-primary group-hover:text-gold transition-colors duration-300">{leader.name}</h3>
+                <p className="text-slate-500 text-sm mt-3 font-medium group-hover:text-white/80 transition-colors uppercase tracking-wider">{leader.role}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
