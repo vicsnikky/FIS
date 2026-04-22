@@ -138,7 +138,7 @@ export default function About() {
             {
               name: 'Mr. Kazeem Olabanji Salami',
               role: 'Chairman and Founder',
-              image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop'
+              image: 'https://i.ibb.co/1JnsZ4MD/Whats-App-Image-2026-04-22-at-2-56-25-PM.jpg'
             },
             {
               name: 'Miss Mojisola Racheal Salami',
@@ -148,7 +148,7 @@ export default function About() {
             {
               name: 'Mrs. Ibiyemi Kehinde',
               role: 'Senior Principal / School Administrator',
-              image: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?q=80&w=2070&auto=format&fit=crop'
+              image: 'https://i.ibb.co/Q3Rk7nKM/ibiyemi.jpg'
             },
             {
               name: 'Mrs. Sanni Olaitan',
