@@ -147,7 +147,7 @@ export default function About() {
             {
               name: 'Miss Mojisola Racheal Salami',
               role: 'Executive Director',
-              image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop'
+              image: 'https://i.ibb.co/KxBb17gx/file-000000000dd071f48905bcbf9301b7be.png'
             },
             {
               name: 'Mrs. Ibiyemi Kehinde',
