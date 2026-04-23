@@ -157,7 +157,7 @@ export default function About() {
             {
               name: 'Mr. Odewale Daniel',
               role: 'Vice Principal / Academics',
-              image: 'https://i.ibb.co/C56th6dH/IMG-20260422-WA0020.jpg'
+              image: 'https://i.ibb.co/q3bz8Qn9/Screenshot-20260423-085601-Whats-App-Business.jpg'
             },
             {
               name: 'Mr. Peterson Samuel Kelvin',
