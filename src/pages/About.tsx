@@ -182,7 +182,7 @@ export default function About() {
                 <img 
                   src={leader.image} 
                   alt={leader.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 filter grayscale group-hover:grayscale-0"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
               <div className="p-8 pt-4 text-center transform transition-transform duration-500 group-hover:-translate-y-1">

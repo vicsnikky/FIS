@@ -13,7 +13,7 @@ export default function Home() {
           <img 
             src={CONTACT_INFO.heroBg} 
             alt="Students at Fenster International School" 
-            className="w-full h-full object-cover object-top opacity-50"
+            className="w-full h-full object-cover object-top opacity-80"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary/50 to-white"></div>
