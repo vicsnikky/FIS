@@ -141,23 +141,18 @@ export default function About() {
           {[
             {
               name: 'Mr. Kazeem Olabanji Salami',
-              role: 'Chairman and Founder',
+              role: 'Director',
               image: 'https://i.ibb.co/1JnsZ4MD/Whats-App-Image-2026-04-22-at-2-56-25-PM.jpg'
             },
             {
               name: 'Miss Mojisola Racheal Salami',
-              role: 'Executive Director',
+              role: 'Chairwoman and Executive Director',
               image: 'https://i.ibb.co/KxBb17gx/file-000000000dd071f48905bcbf9301b7be.png'
             },
             {
               name: 'Mrs. Ibiyemi Kehinde',
               role: 'Senior Principal / School Administrator',
               image: 'https://i.ibb.co/Q3Rk7nKM/ibiyemi.jpg'
-            },
-            {
-              name: 'Mr. Odewale Daniel',
-              role: 'Vice Principal / Academics',
-              image: 'https://i.ibb.co/q3bz8Qn9/Screenshot-20260423-085601-Whats-App-Business.jpg'
             },
             {
               name: 'Mr. Peterson Samuel Kelvin',
