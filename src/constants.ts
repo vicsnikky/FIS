@@ -7,6 +7,7 @@ export const COLORS = {
 };
 
 export const CONTACT_INFO = {
+  portalUrl: '#', // Replace with the actual school portal URL when provided
   canada: {
     address: '112 Avenue, Edmonton Alberta, Canada',
   },

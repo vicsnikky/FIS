@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Phone, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { CONTACT_INFO } from '../constants';
@@ -56,14 +56,14 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-10">
+        {/* Desktop Links & Actions */}
+        <div className="hidden md:flex items-center gap-4 lg:gap-7">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.href}
               className={cn(
-                'text-sm font-semibold transition-all hover:text-gold relative group',
+                'text-xs lg:text-sm font-semibold transition-all hover:text-gold relative group whitespace-nowrap',
                 location.pathname === link.href ? 'text-gold' : 'text-white'
               )}
             >
@@ -74,15 +74,26 @@ export default function Navbar() {
               )}></span>
             </Link>
           ))}
-          <a
-            href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-accent text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:shadow-xl hover:shadow-accent/20 transition-all active:scale-95"
-          >
-            <Phone size={16} />
-            Apply Now
-          </a>
+          <div className="flex items-center gap-2.5 lg:gap-3">
+            <a
+              href={CONTACT_INFO.portalUrl}
+              target={CONTACT_INFO.portalUrl && CONTACT_INFO.portalUrl !== '#' ? "_blank" : undefined}
+              rel={CONTACT_INFO.portalUrl && CONTACT_INFO.portalUrl !== '#' ? "noopener noreferrer" : undefined}
+              className="flex items-center gap-1.5 lg:gap-2 bg-gold text-primary hover:bg-gold/90 px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-bold shadow-md hover:shadow-gold/20 transition-all active:scale-95 whitespace-nowrap"
+            >
+              <GraduationCap size={16} />
+              School Portal
+            </a>
+            <a
+              href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 lg:gap-2 bg-accent text-white px-3.5 lg:px-5 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-bold hover:shadow-xl hover:shadow-accent/20 transition-all active:scale-95 whitespace-nowrap"
+            >
+              <Phone size={15} />
+              Apply Now
+            </a>
+          </div>
         </div>
 
         {/* Mobile Toggle */}
@@ -103,7 +114,7 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-b border-slate-100 overflow-hidden shadow-xl"
           >
-            <div className="flex flex-col px-6 py-8 gap-6">
+            <div className="flex flex-col px-6 py-8 gap-5">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -116,14 +127,26 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <a
-                href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center bg-accent text-white py-4 rounded-xl text-md font-bold hover:bg-red-700 transition-colors"
-              >
-                Chat with FIS
-              </a>
+              <div className="pt-2 border-t border-slate-100 flex flex-col gap-3">
+                <a
+                  href={CONTACT_INFO.portalUrl}
+                  target={CONTACT_INFO.portalUrl && CONTACT_INFO.portalUrl !== '#' ? "_blank" : undefined}
+                  rel={CONTACT_INFO.portalUrl && CONTACT_INFO.portalUrl !== '#' ? "noopener noreferrer" : undefined}
+                  className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3.5 rounded-xl text-base font-bold hover:bg-primary/90 transition-colors shadow-md"
+                >
+                  <GraduationCap size={18} className="text-gold" />
+                  School Portal
+                </a>
+                <a
+                  href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 bg-accent text-white py-3.5 rounded-xl text-base font-bold hover:bg-red-700 transition-colors shadow-md"
+                >
+                  <Phone size={18} />
+                  Chat with FIS
+                </a>
+              </div>
             </div>
           </motion.div>
         )}
