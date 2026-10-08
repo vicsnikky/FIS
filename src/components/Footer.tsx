@@ -76,6 +76,7 @@ export default function Footer() {
               <li><Link to="/programs" className="hover:text-gold transition-colors">Curriculum</Link></li>
               <li><Link to="/gallery" className="hover:text-gold transition-colors">School Life</Link></li>
               <li><Link to="/news" className="hover:text-gold transition-colors">News</Link></li>
+              <li><a href={CONTACT_INFO.portalUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">School Portal</a></li>
               <li><Link to="/contact" className="hover:text-gold transition-colors">Apply Now</Link></li>
             </ul>
           </div>
