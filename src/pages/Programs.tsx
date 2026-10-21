@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { GraduationCap, BookOpen, Globe, School, Briefcase, Baby } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
+import AdmissionsFAQ from '../components/AdmissionsFAQ';
 
 const programCategories = [
   {
@@ -118,6 +119,11 @@ export default function Programs() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Admissions FAQ Component */}
+      <section id="faq" className="section-padding pt-0">
+        <AdmissionsFAQ />
       </section>
 
       {/* Call to action */}

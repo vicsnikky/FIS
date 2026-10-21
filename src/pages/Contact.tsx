@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { GraduationCap, MapPin, Phone, Mail, Send } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
 import { supabase } from '../lib/supabase';
+import AdmissionsFAQ from '../components/AdmissionsFAQ';
 
 export default function Contact() {
   const [status, setStatus] = useState({ submitting: false, success: false, error: '' });
@@ -163,6 +164,11 @@ export default function Contact() {
              </div>
            </div>
         </div>
+      </section>
+
+      {/* Admissions FAQ for Prospective Parents */}
+      <section className="max-w-7xl mx-auto px-6 mb-20" id="faq">
+        <AdmissionsFAQ />
       </section>
     </div>
   );
