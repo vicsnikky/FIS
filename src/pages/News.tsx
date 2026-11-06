@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Tag, ChevronRight, User } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import SafeImage from '../components/SafeImage';
 
 export default function News() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -83,11 +84,11 @@ export default function News() {
                 className="group grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white p-6 rounded-[40px] shadow-sm border border-slate-50 hover:shadow-2xl transition-all"
               >
                 <div className="md:col-span-5 relative overflow-hidden rounded-3xl aspect-[4/3] md:aspect-square">
-                  <img 
+                  <SafeImage 
                     src={post.image} 
+                    fallbackSrc="/images/campus.jpg"
                     alt={post.title} 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
                   />
                 </div>
                 

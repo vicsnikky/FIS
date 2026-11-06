@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { CONTACT_INFO } from '../constants';
 import { Monitor, Library as LibraryIcon, Trophy, Code, Newspaper } from 'lucide-react';
+import SafeImage from '../components/SafeImage';
 
 export default function Home() {
   return (
@@ -10,11 +11,11 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-primary">
         <div className="absolute inset-0 z-0">
-          <img 
+          <SafeImage 
             src={CONTACT_INFO.heroBg} 
+            fallbackSrc={CONTACT_INFO.heroBgFallback}
             alt="Students at Fenster International School" 
             className="w-full h-full object-cover object-top opacity-80"
-            referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary/50 to-white"></div>
         </div>
@@ -86,11 +87,11 @@ export default function Home() {
           </div>
           <div className="relative">
             <div className="absolute -top-6 -left-6 w-32 h-32 bg-accent/10 rounded-3xl -z-10"></div>
-            <img 
-              src="https://i.ibb.co/wNLGC48G/Whats-App-Image-2026-04-22-at-3-10-41-PM.jpg" 
+            <SafeImage 
+              src="/images/collab.jpg" 
+              fallbackSrc="/images/campus.jpg"
               alt="Collaboration at FIS" 
               className="rounded-3xl shadow-2xl object-cover w-full h-[400px]"
-              referrerPolicy="no-referrer"
             />
             <div className="absolute -bottom-6 -right-6 bg-white p-8 rounded-2xl shadow-xl flex items-center gap-4 max-w-xs">
               <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-xl text-white font-bold text-2xl">
@@ -166,11 +167,11 @@ export default function Home() {
 
             <div className="relative">
               <div className="aspect-[4/5] rounded-[40px] overflow-hidden shadow-2xl border-4 border-white/10 relative group">
-                <img 
-                  src="https://i.ibb.co/3myw6Wjr/Whats-App-Image-2026-04-22-at-3-10-44-PM.jpg" 
+                <SafeImage 
+                  src="/images/students.jpg" 
+                  fallbackSrc="https://i.ibb.co/3myw6Wjr/Whats-App-Image-2026-04-22-at-3-10-44-PM.jpg"
                   alt="Students learning" 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
                 <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">

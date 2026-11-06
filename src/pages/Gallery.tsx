@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Image, Play, X, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import SafeImage from '../components/SafeImage';
 
 export default function Gallery() {
   const [selectedMedia, setSelectedMedia] = useState<any>(null);
@@ -57,11 +58,11 @@ export default function Gallery() {
                 className="group relative cursor-pointer overflow-hidden rounded-[32px] bg-slate-100 aspect-[4/3] shadow-sm hover:shadow-2xl transition-all"
                 onClick={() => setSelectedMedia(item)}
               >
-              <img
+              <SafeImage
                 src={item.type === 'video' ? item.thumbnail : item.url}
+                fallbackSrc="/images/campus.jpg"
                 alt={item.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
                 <div className="text-white space-y-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

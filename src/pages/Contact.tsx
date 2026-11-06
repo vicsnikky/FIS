@@ -4,6 +4,7 @@ import { GraduationCap, MapPin, Phone, Mail, Send } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
 import { supabase } from '../lib/supabase';
 import AdmissionsFAQ from '../components/AdmissionsFAQ';
+import SafeImage from '../components/SafeImage';
 
 export default function Contact() {
   const [status, setStatus] = useState({ submitting: false, success: false, error: '' });
@@ -147,11 +148,11 @@ export default function Contact() {
       {/* Map/Campus Image */}
       <section className="max-w-7xl mx-auto px-6 mb-20">
         <div className="w-full h-[500px] bg-slate-100 rounded-[40px] flex items-center justify-center overflow-hidden border border-slate-200 relative group">
-           <img 
-            src="https://i.ibb.co/bMzx4VJ7/Screenshot-20260422-181318-Whats-App.jpg" 
+           <SafeImage 
+            src={CONTACT_INFO.campus} 
+            fallbackSrc={CONTACT_INFO.campusFallback}
             alt="Nigeria Campus" 
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            referrerPolicy="no-referrer"
           />
            <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
            <div className="absolute bottom-10 left-10 flex items-center gap-4 bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20 shadow-2xl">

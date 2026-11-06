@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Shield, Target, Eye, Award, MapPin } from 'lucide-react';
+import SafeImage from '../components/SafeImage';
 
 const values = [
   { 
@@ -40,11 +41,11 @@ export default function About() {
       <section className="section-padding bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="relative">
-            <img 
-              src="https://i.ibb.co/bMzx4VJ7/Screenshot-20260422-181318-Whats-App.jpg" 
+            <SafeImage 
+              src="/images/campus.jpg" 
+              fallbackSrc="https://i.ibb.co/bMzx4VJ7/Screenshot-20260422-181318-Whats-App.jpg"
               alt="Fenster International School Nigeria Campus" 
               className="rounded-[40px] shadow-2xl object-cover w-full h-[550px]"
-              referrerPolicy="no-referrer"
             />
             <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4">
               <div className="w-10 h-10 bg-accent flex items-center justify-center rounded-lg text-white">
@@ -142,27 +143,32 @@ export default function About() {
             {
               name: 'Mr. Kazeem Olabanji Salami',
               role: 'Director',
-              image: 'https://i.ibb.co/1JnsZ4MD/Whats-App-Image-2026-04-22-at-2-56-25-PM.jpg'
+              image: '/images/leader-kazeem.jpg',
+              fallbackImage: 'https://i.ibb.co/1JnsZ4MD/Whats-App-Image-2026-04-22-at-2-56-25-PM.jpg'
             },
             {
               name: 'Miss Mojisola Racheal Salami',
-              role: 'Chairwoman and Executive Director',
-              image: 'https://i.ibb.co/KxBb17gx/file-000000000dd071f48905bcbf9301b7be.png'
+              role: 'Chairperson and Executive Director',
+              image: '/images/leader-racheal.png',
+              fallbackImage: 'https://i.ibb.co/KxBb17gx/file-000000000dd071f48905bcbf9301b7be.png'
             },
             {
               name: 'Mrs. Ibiyemi Kehinde',
               role: 'Senior Principal / School Administrator',
-              image: 'https://i.ibb.co/Q3Rk7nKM/ibiyemi.jpg'
+              image: '/images/leader-ibiyemi.jpg',
+              fallbackImage: 'https://i.ibb.co/Q3Rk7nKM/ibiyemi.jpg'
             },
             {
               name: 'Mr. Peterson Samuel Kelvin',
               role: 'Vice Principal / Assistant School Administrator / Head of Staff',
-              image: 'https://i.ibb.co/gF3qyV7v/file-00000000f61071f49f632eb77eaee58e.png'
+              image: '/images/leader-samuel.png',
+              fallbackImage: 'https://i.ibb.co/gF3qyV7v/file-00000000f61071f49f632eb77eaee58e.png'
             },
             {
               name: 'Mrs. Sanni Olaitan',
               role: 'Bursar / Resource Manager',
-              image: 'https://i.ibb.co/39H7FpGZ/file-00000000cc3471fdbbe9feee2ccb239e.png'
+              image: '/images/leader-sanni.png',
+              fallbackImage: 'https://i.ibb.co/39H7FpGZ/file-00000000cc3471fdbbe9feee2ccb239e.png'
             }
           ].map((leader, i) => (
             <motion.div 
@@ -174,9 +180,11 @@ export default function About() {
               className="group bg-slate-50 rounded-[40px] overflow-hidden hover:bg-primary transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-primary/20"
             >
               <div className="aspect-[4/5] overflow-hidden m-4 rounded-[32px] bg-slate-200">
-                <img 
+                <SafeImage 
                   src={leader.image} 
+                  fallbackSrc={leader.fallbackImage}
                   alt={leader.name}
+                  fallbackLabel={leader.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               </div>

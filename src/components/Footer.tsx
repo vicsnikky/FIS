@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, MessageCircle, Mail, MapPin, Globe } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
+import SafeImage from './SafeImage';
 
 const TikTokIcon = ({ size }: { size: number }) => (
   <svg 
@@ -24,8 +25,9 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <img 
+              <SafeImage 
                 src={CONTACT_INFO.logo} 
+                fallbackSrc={CONTACT_INFO.logoFallback}
                 alt="Fenster Logo" 
                 className="w-12 h-12 object-contain rounded-lg bg-white p-1"
               />

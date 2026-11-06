@@ -4,6 +4,7 @@ import { Menu, X, Phone, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { CONTACT_INFO } from '../constants';
+import SafeImage from './SafeImage';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -41,8 +42,9 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <img 
+          <SafeImage 
             src={CONTACT_INFO.logo} 
+            fallbackSrc={CONTACT_INFO.logoFallback}
             alt="Fenster International School Logo" 
             className="w-12 h-12 object-contain rounded-lg bg-white p-1"
           />
