@@ -7,7 +7,7 @@ export const COLORS = {
 };
 
 export const CONTACT_INFO = {
-  portalUrl: 'https://fisresult.vercel.app',
+  portalUrl: 'https://portal.fensterinternationalschool.com',
   canada: {
     address: '112 Avenue, Edmonton Alberta, Canada',
   },

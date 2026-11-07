@@ -200,15 +200,15 @@ const FAQ_DATA: FAQItem[] = [
     id: 'gen-portal',
     category: 'general',
     question: 'How do parents monitor their child’s academic records and results?',
-    shortAnswer: 'Fenster International School provides a secure 24/7 web-based School Portal (fisresult.vercel.app). Parents receive unique login credentials to track termly report cards, continuous assessments, attendance, and official announcements.',
+    shortAnswer: 'Fenster International School provides a secure 24/7 web-based School Portal (portal.fensterinternationalschool.com). Parents receive unique login credentials to track termly report cards, continuous assessments, attendance, and official announcements.',
     detailedContent: {
       steps: [
-        'Visit the portal link: fisresult.vercel.app (also accessible directly from the top navigation bar)',
+        'Visit the portal link: portal.fensterinternationalschool.com (also accessible directly from the top navigation bar)',
         'Enter the student registration ID and secure pin issued by the school registrar',
         'View term grades, teacher comments, subject score breakdowns, and downloadable PDF result slips'
       ]
     },
-    highlight: 'Direct portal: fisresult.vercel.app'
+    highlight: 'Direct portal: portal.fensterinternationalschool.com'
   },
   {
     id: 'gen-visitation',
@@ -664,7 +664,7 @@ export default function AdmissionsFAQ({
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-primary hover:bg-primary/90 px-4 py-2 rounded-xl transition-colors shadow-sm"
                             >
-                              <span>Open School Portal (fisresult.vercel.app)</span>
+                              <span>Open School Portal (portal.fensterinternationalschool.com)</span>
                               <ExternalLink size={13} />
                             </a>
                           ) : (
